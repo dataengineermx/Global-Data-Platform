@@ -35,5 +35,9 @@ for country in objects:
         "Population": country["population"]
     })
 
-df = pd.DataFrame(rows)
+#df = pd.DataFrame(rows)
+
+def earthquakes(df):
+    return earthquakes
+
 print(df)
