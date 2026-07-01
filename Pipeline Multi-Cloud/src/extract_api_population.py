@@ -24,7 +24,7 @@ response = requests.get(
 objects=response.json()["data"]["objects"]
 
 
-rows=[]
+data=[]
 
 for country in objects:
     rows.append({
@@ -37,8 +37,8 @@ for country in objects:
 
 #df = pd.DataFrame(rows)
 
-if rows:
-    df = pd.DataFrame(rows)
+if data:
+    df = pd.DataFrame(data)
     print(df)
 else:
     print("No se encontraron registros en poblacion o hubo un error en la solicitud.")
