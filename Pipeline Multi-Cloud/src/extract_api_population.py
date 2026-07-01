@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 from logging_config import config_my_logger
-logger = config_my_logger("JOB_001")
+logger = config_my_logger("API call load population")
 
 
 ##Codes.alpha_2=MX for Mexico
