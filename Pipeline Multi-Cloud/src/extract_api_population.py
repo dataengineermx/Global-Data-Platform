@@ -37,10 +37,8 @@ for country in objects:
 
 #df = pd.DataFrame(rows)
 
-
-
-
-def earthquakes(df):
-    return earthquakes
-
-print(rows)
+if rows:
+    df = pd.DataFrame(rows)
+    print(df)
+else:
+    print("No se encontraron registros en poblacion o hubo un error en la solicitud.")
