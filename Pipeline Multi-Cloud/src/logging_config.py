@@ -1,7 +1,7 @@
 
 import logging
 import time
-
+from logging_config import config_my_logger
 
 #Get duration of job execution
 start = time.time()

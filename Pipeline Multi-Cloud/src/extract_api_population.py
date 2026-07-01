@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+from logging_config import config_my_logger
 
 
 ##Codes.alpha_2=MX for Mexico
@@ -40,6 +41,8 @@ for country in objects:
 
 if data:
     df = pd.DataFrame(data)
-    print("API call successfull")
+    logger.info("API call successfull")
+
+
 else:
     print("No population information available")
