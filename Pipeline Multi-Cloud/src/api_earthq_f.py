@@ -9,7 +9,7 @@ params = {
     "starttime": "2026-01-01",      #Fecha Inicio
     "latitude": 19.4326,            # LAT y LON de la CDMX, México
     "longitude": -99.1332,
-    "maxradiuskm": 500,             #Radio de 500km
+    "maxradiuskm": 700,             #Radio de 500km
 }
 
 records = []
@@ -33,7 +33,8 @@ with requests.Session() as session:
         for e in data.get("features", []):
             records.append(
                 {
-                    "type": "earthquake",
+                    "type": e["properties"]["type"],
+                    "status": e["properties"]["status"],
                     "magnitude": e["properties"]["mag"],
                     "place": e["properties"]["place"],
                     "coordinates": e["geometry"]["coordinates"], 
@@ -47,7 +48,10 @@ with requests.Session() as session:
 # Solo creamos el DataFrame si logramos recuperar registros
 #if records Comprueba si la lista tiene datos
 
+
+
 if records:
     df = pd.DataFrame(records)
+    print(df)
 else:
     print("No se encontraron sismos o hubo un error en la solicitud.")
