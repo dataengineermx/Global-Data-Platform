@@ -49,6 +49,5 @@ with requests.Session() as session:
 
 if records:
     df = pd.DataFrame(records)
-    print(df)
 else:
     print("No se encontraron sismos o hubo un error en la solicitud.")
