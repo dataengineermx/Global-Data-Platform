@@ -1,11 +1,12 @@
 import logging
 from pathlib import Path
+from paths import pipe_logs_path
 
 
 def get_logger(process_name):
 
     # Crear carpeta logs si no existe
-    Path("logs").mkdir(exist_ok=True)
+    Path(pipe_logs_path).mkdir(exist_ok=True)
 
     logger = logging.getLogger(process_name)
     logger.setLevel(logging.INFO)
