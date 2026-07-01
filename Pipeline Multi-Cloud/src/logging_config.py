@@ -6,7 +6,7 @@ import time
 #Get duration of job execution
 start = time.time()
 elapsedtime = time.time() - start
-duracion=logging.info(f"Elapsed Time: {elapsedtime:.2f} seconds")
+logging.info(f"Elapsed Time: {elapsedtime:.2f} seconds")
 
 
 def config_my_logger(logger_jobs):
