@@ -1,2 +1,2 @@
-import src.api_earthq_f import df
-    print(df)
+from src.api_earthq_f import df
+print(df)
