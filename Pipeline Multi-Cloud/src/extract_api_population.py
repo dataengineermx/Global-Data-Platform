@@ -37,7 +37,10 @@ for country in objects:
 
 #df = pd.DataFrame(rows)
 
+
+
+
 def earthquakes(df):
     return earthquakes
 
-print(df)
+print(rows)
