@@ -1,19 +1,25 @@
 import pandas as pd
-import logging
 from paths import data_raw_path
 from extract_api_population import df
-from logging_config import logging
-from logging_config import config_my_logger
-from logging_config import obtener_resumen
+from job_monitor import LoadMonitor
+from logger_config import get_logger
 
-logger = config_my_logger("Job 01_load_population")
-logger.info("Job Started")
+logger = get_logger("load_population")
+
+start_time = time.time()
+
+
+
+job_monitor = LoadMonitor("LOAD_CSV_POPULATION")
+job_monitor.start()
+records = len(df)
+
+
+
+
 try:
-    
     df.to_csv(data_raw_path/"population.csv", index=False)
-    logging.info("File loaded successfully")
-    obtener_resumen("Resumen")
+    job_monitor.success(records)
 
 except Exception as e:
     print(type(e).__name__, e)
-    logging.error("Error when loading records")

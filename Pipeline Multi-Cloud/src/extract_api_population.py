@@ -1,9 +1,5 @@
 import requests
 import pandas as pd
-from logging_config import config_my_logger
-#from logging_config import obtener_resumen
-
-
 
 ##Codes.alpha_2=MX for Mexico
 ##For Mexico        url = "https://api.restcountries.com/countries/v5?codes.alpha_2=MX"
@@ -27,6 +23,8 @@ response = requests.get(
 objects=response.json()["data"]["objects"]
 
 data=[]
+records=0
+
 
 for country in objects:
     data.append({
@@ -38,8 +36,9 @@ for country in objects:
     })
     
 if data:
-    df = pd.DataFrame(data)    
+    df = pd.DataFrame(data)
+    records = len(df)
+    print(f"RECORDS READ - POPULATION API : ",records)
+
 else:
     print("No population information available")
-
-logger = config_my_logger("API call load population")
