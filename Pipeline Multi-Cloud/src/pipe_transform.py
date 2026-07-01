@@ -3,4 +3,4 @@ import pandas as pd
 #Read earthquakes
 from api_earthq_f import df
 
-eq=pd{}
+df=pd.to_csv("data/raw/earthquakes.csv")
