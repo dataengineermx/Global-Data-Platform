@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from logging_config import config_my_logger
+from logging_config import obtener_resumen
 #logger = config_my_logger("API call load population")
 
 
@@ -36,12 +37,11 @@ for country in objects:
         "Country_code": country["codes"]["alpha_2"],
         "Population": country["population"]
     })
-
-#df = pd.DataFrame(rows)
-
+    
+    config_my_logger("API call successfull")
 
 if data:
     df = pd.DataFrame(data)
-    config_my_logger("API call successfull")
+    obtener_resumen("Registros")
 else:
     print("No population information available")
