@@ -2,6 +2,6 @@ import pandas as pd
 from paths import data_raw_path
 
 #Read earthquakes
-from extract_api_population import rows
+from extract_api_population import data
 
-rows.to_csv(data_raw_path/"population.csv", index=False)
+data.to_csv(data_raw_path/"population.csv", index=False)
