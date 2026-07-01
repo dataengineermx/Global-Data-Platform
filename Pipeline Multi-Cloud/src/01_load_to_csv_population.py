@@ -3,22 +3,7 @@ import logging
 from paths import data_raw_path
 from extract_api_population import df
 
-#Execution Controls
-logging.basicConfig(
-level=logging.INFO,
-format='%(asctime)s | %(levelname)s | %(message)s')
 
-total_leidos = 0
-total_insertados = 0
-total_rechazados = 0
-
-
-logging.info("Load started"),
-logging.info(
-    f"Leídos={total_leidos}, "
-    f"Insertados={total_insertados}, "
-    f"Rechazados={total_rechazados}"             
-             )
 
 try:
     
