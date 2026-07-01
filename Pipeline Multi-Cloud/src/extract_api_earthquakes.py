@@ -38,7 +38,8 @@ with requests.Session() as session:
                     "magnitude": e["properties"]["mag"],
                     "place": e["properties"]["place"],
                     "coordinates": e["geometry"]["coordinates"], 
-                    "time": datetime.fromtimestamp(e["properties"]["time"] // 1000),  # Usamos una división entera (//) para evitar problemas de flotantes en timestamps
+                    "time": e["properties"]["time"]
+ #                   "time": datetime.fromtimestamp(e["properties"]["time"] // 1000),  # Usamos una división entera (//) para evitar problemas de flotantes en timestamps
                 }
             )
 #Si en la sección del try se cayó el internet, falló la URL o el servidor estuvo caído, este bloque atrapa el problema, te avisa en la pantalla con un mensaje y evita que el programa se cierre con un error crítico.
