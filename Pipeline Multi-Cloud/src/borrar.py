@@ -4,4 +4,4 @@ logger = config_my_logger("JOB_001")
 
 logger.info("Inicio del proceso")
 logger.error("Error en la carga")
-elapsedtime
+elapsedtime("Duracion")
