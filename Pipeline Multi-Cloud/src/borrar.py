@@ -3,5 +3,5 @@ from logging_config import elapsedtime
 logger = config_my_logger("JOB_001")
 
 logger.info("Inicio del proceso")
-logger.error("Error en la carga")
+#logger.error("Error en la carga")
 elapsedtime("Duracion")
