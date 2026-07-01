@@ -27,7 +27,7 @@ objects=response.json()["data"]["objects"]
 data=[]
 
 for country in objects:
-    rows.append({
+    data.append({
         "Region":country["region"],
         "SubRegion":country["subregion"],
         "Country_Name": country["names"]["common"],
