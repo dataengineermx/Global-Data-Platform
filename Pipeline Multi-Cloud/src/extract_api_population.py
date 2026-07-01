@@ -23,7 +23,7 @@ response = requests.get(
 
 objects=response.json()["data"]["objects"]
 
-
+num_rec=0
 data=[]
 
 for country in objects:
@@ -37,8 +37,10 @@ for country in objects:
 
 #df = pd.DataFrame(rows)
 
+
 if data:
     df = pd.DataFrame(data)
-    print("Population information collected successfully")
+    total_rec= ("Region","count")
+    print(f"Population information collected successfully:", total_rec)
 else:
     print("No population information available")
