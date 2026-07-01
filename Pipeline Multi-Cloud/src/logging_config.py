@@ -3,6 +3,9 @@ import logging
 import time
 from logging_config import config_my_logger
 
+
+logger = config_my_logger("JOB_01 Population")
+
 #Get duration of job execution
 start = time.time()
 elapsedtime = time.time() - start
