@@ -20,7 +20,7 @@ def config_my_logger(logger_jobs):
         format = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
         
         # Handler para guardar en archivo
-        manage_file = logging.FileHandler('app.log')
+        manage_file = logging.FileHandler(pipe_logs_path/"app.log")
         manage_file.setFormatter(format)
         logger.addHandler(manage_file)
         
