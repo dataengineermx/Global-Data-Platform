@@ -1,6 +1,7 @@
 
 import logging
 import time
+from paths import pipe_logs_path
 
 #Get duration of job execution
 start = time.time()
@@ -30,19 +31,37 @@ def config_my_logger(logger_jobs):
         
     return logger
 
-# Count number of registrosclass ContadorLogger(logging.Logger):
+# 1. Definimos un Logger personalizado que cuenta los registrosclass ContadorLogger(logging.Logger):
 def __init__(self, name, level=logging.NOTSET):
-        super().__init__(name, level)
-        # Diccionario para almacenar el conteo por cada nivel
-        self.counts = {"DEBUG": 0, "INFO": 0, "WARNING": 0, "ERROR": 0, "CRITICAL": 0}
+    super().__init__(name, level)
+     # Diccionario para almacenar el conteo por cada nivel
+    self.conteos = {"DEBUG": 0, "INFO": 0, "WARNING": 0, "ERROR": 0, "CRITICAL": 0}
 
 def handle(self, record):
-   # Cada vez que se procesa un registro, incrementamos su contador si el nivel existe
-    if record.levelname in self.counts:
-        self.counts[record.levelname] += 1
+    # Cada vez que se procesa un registro, incrementamos su contador si el nivel existe
+    if record.levelname in self.conteos:
+        self.conteos[record.levelname] += 1
     return super().handle(record)
         
 def obtener_resumen(self):
     # Devuelve el total acumulado y el desglose por tipo
-    total = sum(self.counts.values())
-    return {"total": total, "details": self.counts}
+    total = sum(self.conteos.values())
+    return {"total": total, "detalles": self.conteos}
+
+
+'''
+# 2. Registramos nuestra clase personalizada en el sistema de logging de Python
+logging.setLoggerClass(ContadorLogger)
+def configurar_mi_logger(nombre_modulo):
+    logger = logging.getLogger(nombre_modulo)
+    logger.setLevel(logging.DEBUG)
+    
+    if not logger.handlers:
+        formato = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+        
+        manejador_archivo = logging.FileHandler(pipe_logs_path/'app.log')
+        manejador_archivo.setFormatter(formato)
+        logger.addHandler(manejador_archivo)
+        
+    return logger
+'''

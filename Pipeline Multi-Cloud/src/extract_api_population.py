@@ -1,8 +1,8 @@
 import requests
 import pandas as pd
 from logging_config import config_my_logger
-from logging_config import obtener_resumen
-#logger = config_my_logger("API call load population")
+#from logging_config import obtener_resumen
+
 
 
 ##Codes.alpha_2=MX for Mexico
@@ -26,7 +26,6 @@ response = requests.get(
 
 objects=response.json()["data"]["objects"]
 
-num_rec=0
 data=[]
 
 for country in objects:
@@ -38,10 +37,9 @@ for country in objects:
         "Population": country["population"]
     })
     
-    config_my_logger("API call successfull")
-
 if data:
-    df = pd.DataFrame(data)
-    obtener_resumen("Registros")
+    df = pd.DataFrame(data)    
 else:
     print("No population information available")
+
+logger = config_my_logger("API call load population")
