@@ -40,7 +40,5 @@ for country in objects:
 
 if data:
     df = pd.DataFrame(data)
-    total_rec= ("Region","count")
-    print(f"Population information collected successfully:", total_rec)
 else:
     print("No population information available")
