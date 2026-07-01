@@ -40,5 +40,6 @@ for country in objects:
 
 if data:
     df = pd.DataFrame(data)
+    print("API call successfull")
 else:
     print("No population information available")
