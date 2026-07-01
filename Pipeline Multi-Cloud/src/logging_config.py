@@ -47,21 +47,3 @@ def obtener_resumen(self):
     # Devuelve el total acumulado y el desglose por tipo
     total = sum(self.counts.values())
     return {"total": total, "details": self.counts}
-
-# 2. Logging
-
-def configurar_mi_logger(count_job):
-    logger = logging.getLogger(str(count_job))
-    logger.setLevel(logging.DEBUG)
-
-    if not logger.handlers:
-        formato = logging.Formatter(
-            '%(asctime)s - %(levelname)s - %(name)s - %(message)s'
-        )
-
-        manage_file = logging.FileHandler('app.log')
-        manage_file.setFormatter(formato)
-
-        logger.addHandler(manage_file)
-
-    return logger
