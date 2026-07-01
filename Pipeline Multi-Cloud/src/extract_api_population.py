@@ -39,6 +39,6 @@ for country in objects:
 
 if data:
     df = pd.DataFrame(data)
-    print("Obtención de datos de población exitosa")
+    print("Population information collected successfully")
 else:
-    print("No se encontraron registros en poblacion o hubo un error en la solicitud.")
+    print("No population information available")
