@@ -6,7 +6,7 @@ url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"
 
 params = {
     "minmagnitude": 3,              # Magnitud mínima
-    "starttime": "2026-01-01",      #Fecha Inicio
+    "starttime": "2017-01-01",      #Fecha Inicio
     "latitude": 19.4326,            # LAT y LON de la CDMX, México
     "longitude": -99.1332,
     "maxradiuskm": 700,             #Radio de 500km

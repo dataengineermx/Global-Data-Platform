@@ -55,7 +55,9 @@ nbdime==4.0.4
 nbformat==5.10.4
 nest-asyncio==1.6.0
 notebook_shim==0.2.4
+numpy==2.5.0
 packaging==26.0
+pandas==3.0.3
 pandocfilters==1.5.1
 parso==0.8.6
 pexpect==4.9.0
@@ -63,8 +65,10 @@ platformdirs==4.9.4
 prometheus_client==0.24.1
 prompt_toolkit==3.0.52
 psutil==7.2.2
+psycopg==3.3.4
 ptyprocess==0.7.0
 pure_eval==0.2.3
+pyarrow==24.0.0
 pycparser==3.0
 Pygments==2.19.2
 python-dateutil==2.9.0.post0

@@ -3,8 +3,6 @@ from paths import data_raw_path
 from extract_api_population import df
 from job_monitor import LoadMonitor
 
-from zoneinfo import ZoneInfo
-
 
 
 job_monitor = LoadMonitor("01_load_to_csv_population")
