@@ -5,6 +5,7 @@ from paths import pipe_logs_path
 
 class LoadMonitor:
 
+#Class constructor se ejecuta automaticamente cuando creo el objeto LoadMonitor
     def __init__(self, process_name):
         self.run_id = str(uuid.uuid4())[:8]
         self.process_name = process_name
