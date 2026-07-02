@@ -1,14 +1,7 @@
 import logging
 import uuid
 from datetime import datetime
-from zoneinfo import ZoneInfo
-from pathlib import Path
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s | %(levelname)s | %(message)s'
-)
-
+from paths import pipe_logs_path
 
 class LoadMonitor:
 
@@ -19,22 +12,22 @@ class LoadMonitor:
         self.logger = self.get_logger()
 
     def start(self):
-        self.start_time = datetime.now(ZoneInfo("America/Mexico_City"))
+        self.start_time = datetime.now()
 
-        logging.info(
+        self.logger.info(
             f"RUN_ID={self.run_id} | "
             f"PROCESS={self.process_name} | "
             f"STATUS=STARTED"
         )
 
     def success(self, records):
-        end_time = datetime.now(ZoneInfo("America/Mexico_City"))
+        end_time = datetime.now()
 
         duration = (
             end_time - self.start_time
         ).total_seconds()
 
-        logging.info(
+        self.logger.info(
             f"RUN_ID={self.run_id} | "
             f"PROCESS={self.process_name} | "
             f"STATUS=SUCCESS | "
@@ -43,13 +36,13 @@ class LoadMonitor:
         )
 
     def failed(self, error):
-        end_time = datetime.now(ZoneInfo("America/Mexico_City"))
+        end_time = datetime.now()
 
         duration = (
             end_time - self.start_time
         ).total_seconds()
 
-        logging.error(
+        self.logger.error(
             f"RUN_ID={self.run_id} | "
             f"PROCESS={self.process_name} | "
             f"STATUS=FAILED | "
@@ -57,28 +50,32 @@ class LoadMonitor:
             f"MESSAGE={error} | "
             f"DURATION={duration:.2f}s"
         )
-
+  
     def get_logger(self):
-
-        # Crear carpeta logs si no existe
-        Path("logs").mkdir(exist_ok=True)
+        print(pipe_logs_path)
+        pipe_logs_path.mkdir(exist_ok=True)
         logger = logging.getLogger(self.process_name)
         logger.setLevel(logging.INFO)
+        logger.propagate = False
 
-        # Evita agregar handlers duplicados
         if not logger.handlers:
 
             formatter = logging.Formatter(
-                '%(asctime)s | %(levelname)s | %(name)s | %(message)s'
+                '%(asctime)s | %(levelname)s | %(message)s'
             )
 
+            # Archivo
             file_handler = logging.FileHandler(
-                f"logs/{self.process_name}.log",
-                encoding="utf-8"
+                f"{pipe_logs_path}/{self.process_name}.log",
+                encoding='utf-8'
             )
-
             file_handler.setFormatter(formatter)
 
+            # Consola
+            console_handler = logging.StreamHandler()
+            console_handler.setFormatter(formatter)
+
             logger.addHandler(file_handler)
+            logger.addHandler(console_handler)
 
         return logger

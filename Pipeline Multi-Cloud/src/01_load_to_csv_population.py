@@ -16,7 +16,6 @@ try:
     df.to_csv(data_raw_path/"population.csv", index=False)
     
     job_monitor.success(records)
-    job_monitor.get_logger()
 
 except Exception as error:
     job_monitor.failed(error)
