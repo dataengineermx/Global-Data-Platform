@@ -263,7 +263,7 @@ def remove_parentesis(
 
     for col in columns:
         df[col] = df[col].str.replace(
-            r"[\[\]]",
+            r"[\[\]\(\)]",
             '',
             regex=True
         )
