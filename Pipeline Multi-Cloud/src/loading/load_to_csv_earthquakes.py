@@ -1,9 +1,9 @@
 import pandas as pd
-from utils.paths import data_raw_path
-from extraction.extract_api_earthquakes import df
-from monitor.job_monitor import LoadMonitor
+from src.utils.paths import data_raw_path
+from src.extraction.extract_api_earthquakes import df
+from src.monitor.job_monitor import LoadMonitor
 
-job_monitor = LoadMonitor("01_load_to_csv_earthquakes")
+job_monitor = LoadMonitor("load_to_csv_earthquakes")
 job_monitor.start()
 
 try:

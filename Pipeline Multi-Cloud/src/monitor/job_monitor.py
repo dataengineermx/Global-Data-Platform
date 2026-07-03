@@ -1,7 +1,7 @@
 import logging
 import uuid
 from datetime import datetime
-from paths import pipe_logs_path
+from src.utils.paths import pipe_logs_path
 
 class LoadMonitor:
 

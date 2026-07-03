@@ -1,11 +1,11 @@
 #from datetime import datetime
-from utils.paths import data_raw_path
-from extraction.extract_api_population import df
-from monitor.job_monitor import LoadMonitor
+from src.utils.paths import data_raw_path
+from src.extraction.extract_api_population import df
+from src.monitor.job_monitor import LoadMonitor
 
 
 
-job_monitor = LoadMonitor("01_load_to_csv_population")
+job_monitor = LoadMonitor("load_to_csv_population")
 job_monitor.start()
 
 
