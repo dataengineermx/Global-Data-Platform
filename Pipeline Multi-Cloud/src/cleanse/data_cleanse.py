@@ -11,3 +11,15 @@ conn = psycopg.connect(
     user=os.getenv("DB_USER"),
     password=os.getenv("DB_PASSWORD")
 )
+
+
+cur = conn.cursor()
+
+cur.execute("SELECT version();")
+
+resultado = cur.fetchone()
+
+print(resultado)
+
+cur.close()
+conn.close()
