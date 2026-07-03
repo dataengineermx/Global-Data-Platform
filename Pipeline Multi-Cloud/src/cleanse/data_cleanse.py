@@ -2,7 +2,10 @@ from dotenv import load_dotenv
 import os
 import psycopg
 
-load_dotenv()
+load_dotenv()   # <-- this loads the .env file
+
+print("DB_HOST")
+
 
 conn = psycopg.connect(
     host=os.getenv("DB_HOST"),
@@ -13,13 +16,15 @@ conn = psycopg.connect(
 )
 
 
+
+
 cur = conn.cursor()
 
 cur.execute("SELECT version();")
-
 resultado = cur.fetchone()
-
 print(resultado)
 
+
+#Close cur
 cur.close()
 conn.close()
