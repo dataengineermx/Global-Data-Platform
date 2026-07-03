@@ -1,7 +1,8 @@
 from pathlib import Path 
 
-base_path = Path(__file__).resolve().parent.parent
-data_raw_path = base_path/"data"/"raw"
-data_clean_path = base_path/"data"/"cleaned"
-data_gold_path = base_path/"data"/"gold"
-pipe_logs_path = base_path/"logs"/"pipeline"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+data_raw_path = PROJECT_ROOT/"data"/"raw"
+data_clean_path = PROJECT_ROOT/"data"/"cleaned"
+data_gold_path = PROJECT_ROOT/"data"/"gold"
+pipe_logs_path = PROJECT_ROOT/"logs"/"pipeline"
