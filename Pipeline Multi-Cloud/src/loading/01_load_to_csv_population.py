@@ -1,4 +1,4 @@
-from datetime import datetime
+#from datetime import datetime
 from utils.paths import data_raw_path
 from extraction.extract_api_population import df
 from monitor.job_monitor import LoadMonitor
