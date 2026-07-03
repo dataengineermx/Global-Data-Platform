@@ -252,6 +252,26 @@ def validate_null_percentage(
             f"High null percentage: {failed.to_dict()}"
         )
 
+def remove_parentesis(
+    df: pd.DataFrame,
+    columns: List[str]
+) -> pd.DataFrame:
+    """
+    Remove special characters.
+    """
+    df = df.copy()
+
+    for col in columns:
+        df[col] = df[col].str.replace(
+            r"[\[\]]",
+            '',
+            regex=True
+        )
+
+    return df
+
+
+
 
 # --------------------------------------------------
 # End-to-End Clean Pipeline
