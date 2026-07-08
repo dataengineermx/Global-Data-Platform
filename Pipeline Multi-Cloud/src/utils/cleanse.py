@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import re
 from typing import List, Dict, Optional
-
+from datetime import datetime
 
 # --------------------------------------------------
 # Missing Value Handling
@@ -161,6 +161,12 @@ def convert_datetime(
         )
 
     return df
+
+def milliseconds_to_date(timestamp_ms: int) -> datetime:
+    """
+    Convert a Unix timestamp in milliseconds to a datetime object.
+    """
+    return datetime.fromtimestamp(timestamp_ms // 1000)
 
 
 # --------------------------------------------------
