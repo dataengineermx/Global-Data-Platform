@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
+import sys
 import psycopg
+import logging
 import pandas as pd
 from src.utils.cleanse import remove_parentesis
 from src.utils.cleanse import milliseconds_to_date
@@ -9,38 +11,115 @@ from src.utils.paths import data_clean_path
 from datetime import datetime
 
 
-load_dotenv()   # <-- this loads the .env file
+# Setup Structured Production Logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s',
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+logger = logging.getLogger("DB_LOADER")
 
+### Loads the .env file
+load_dotenv()    
+
+
+##Data Transformations
 df = pd.read_csv(data_raw_path/"earthquakes.csv")
 
-# transformations
-t=1782943895600
-test = milliseconds_to_date(t)
-
-#atetime.fromtimestamp(e["properties"]["time"] // 1000)
-#df["time"] = datetime.fromtimestamp(1782943895600)
-#df["coordinates"] = remove_parentesis(df=df,columns=["coordinates"])["coordinates"]
-
-print(test)
-
-df.to_csv(data_clean_path/"clean_earthquakes.csv", index=False)
-
-conn = psycopg.connect(
-    host=os.getenv("DB_HOST"),
-    port=os.getenv("DB_PORT"),
-    dbname=os.getenv("DB_NAME"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD")
+df[["longitude", "latitude", "depth"]] = (
+    df["coordinates"]
+      .str.strip("[]")
+      .str.split(", ", expand=True)
 )
 
+# Convert to numeric types
+df["coordinates"] = df.drop(columns=["coordinates"], inplace=True)
+df["longitude"] = df["longitude"].astype(float)
+df["latitude"] = df["latitude"].astype(float)
+df["depth"] = df["depth"].astype(float)
+df["time"] = pd.to_datetime(df["time"], unit="ms")
 
-cur = conn.cursor()
 
-cur.execute("SELECT version();")
-resultado = cur.fetchone()
-print(resultado)
+df = df[
+    [
+        "type",
+        "status",
+        "magnitude",
+        "place",
+        "time",
+        "longitude",
+        "latitude",
+        "depth"
+    ]
+]
+
+#Store cleaned data
+df.to_csv(data_clean_path/"clean_earthquakes.csv", index=False)
 
 
-#Close cur
-cur.close()
-conn.close()
+
+file_path=data_clean_path
+target_table="earthquakes"
+
+def get_db_connection_string() -> str:
+    """Builds a secure psycopg connection string from system environments."""
+    try:
+        return psycopg.conninfo.make_conninfo(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD")
+        )
+
+    except KeyError as e:
+        logger.critical(f"Missing required environment deployment variable: {e}")
+        sys.exit(1)
+
+def bulk_load_csv_to_postgres(file_path: str, target_table: str) -> None:
+    """Loads a CSV into PostgreSQL using streaming COPY protocols with transaction rollback."""
+    csv_path = file_path
+    
+    if not csv_path.is_file():
+        logger.error(f"Target execution file path does not exist: {file_path}")
+        return
+
+    conn_str = get_db_connection_string()
+    
+    logger.info(f"Initiating bulk upload of {csv_path.name} into table '{target_table}'")
+
+    # Context manager handles implicit database connection closures
+    try:
+        with psycopg.connect(conn_str) as conn:
+            # Explicitly manage transaction isolation if required, default is autocommit=False
+            with conn.cursor() as cur:
+                
+                # Open CSV file stream with strict encoding parameters
+                with open(csv_path, mode='r', encoding='utf-8', errors='strict') as f:
+                    
+                    # Construct optimized COPY command (explicitly list target columns if mismatched)
+                    copy_query = f"COPY {target_table} FROM STDIN WITH (FORMAT csv, HEADER true)"
+                    
+                    # FREEZE reduces WAL (Write-Ahead Logging) overhead for newly created or empty tables
+                    with cur.copy(copy_query) as copy:
+                        while chunk := f.read(65536):  # Optimized 64KB memory chunk blocks
+                            copy.write(chunk)
+                            
+            # The context manager automatically issues a COMMIT here if no exceptions occurred.
+            logger.info("Bulk copy pipeline execution completed successfully. Changes committed.")
+            
+    except psycopg.OperationalError as db_err:
+        logger.critical(f"Database network connection failed: {db_err}")
+    except psycopg.DataError as data_err:
+        logger.error(f"Data type mismatch constraint failure during streaming COPY operation: {data_err}")
+    except Exception as general_err:
+        # Context manager automatically triggers a ROLLBACK before entering this block
+        logger.error(f"Transaction aborted. Pipeline safely rolled back due to unhandled exception: {general_err}")
+
+if __name__ == "__main__":
+    # In production, pass these via arguments, task runner orchestration (Airflow), or configurations
+    CSV_FILE = data_clean_path/"clean_earthquakes.csv"
+    TABLE_NAME = target_table
+    
+    bulk_load_csv_to_postgres(CSV_FILE, TABLE_NAME)
+
