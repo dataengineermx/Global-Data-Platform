@@ -9,6 +9,7 @@ from src.monitor import job_monitor
 from src.transform.earthquake_transform import dataframe_to_buffer
 
 
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s",
@@ -16,15 +17,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
-
-from src.transform.earthquake_transform import (
-    earthquake_transform,
-    dataframe_to_buffer,
-)
-
-df = earthquake_transform()
-buffer = dataframe_to_buffer(df)
 
 
 def get_db_connection_string() -> str:
@@ -42,17 +34,37 @@ def get_db_connection_string() -> str:
         logger.critical(f"Missing required environment deployment variable: {e}")
         sys.exit(1)
 
-try:
-    with psycopg.connect(get_db_connection_string()) as conn:
-        with conn.cursor() as cur:
-            with cur.copy(
-                """COPY earthquakes (eventtype, status, magnitude, place, longitude, latitude, depth, time) FROM STDIN WITH CSV HEADER"""
-            ) as copy:
-                copy.write(buffer.getvalue())
-except psycopg.OperationalError as db_err:
-    logger.critical(f"Database network connection failed: {db_err}")
-except psycopg.DataError as data_err:
-    logger.error(f"Data type mismatch constraint failure during streaming COPY operation: {data_err}")
-except Exception as general_err:
-    # Context manager automatically triggers a ROLLBACK before entering this block
-    logger.error(f"Transaction aborted. Pipeline safely rolled back due to unhandled exception: {general_err}")
+def load_earthquakes(df: pd.DataFrame) -> None:
+    logger.warning(">>> ENTERED load_earthquakes() <<<")
+    logger.info(f"Rows to load: {len(df)}")
+
+    buffer = dataframe_to_buffer(df)
+    csv_data = buffer.getvalue()
+
+    logger.info(f"CSV length: {len(csv_data)}")
+    logger.info(csv_data[:500])
+
+    try:
+        with psycopg.connect(get_db_connection_string()) as conn:
+            logger.info("Connected to PostgreSQL")
+
+            with conn.cursor() as cur:
+                logger.info("Starting COPY")
+
+                with cur.copy(
+                    """
+                    COPY earthquakes
+                    (eventtype,status,magnitude,place,longitude,latitude,depth,time)
+                    FROM STDIN WITH CSV HEADER
+                    """
+                ) as copy:
+                    copy.write(csv_data)
+
+                logger.info("COPY finished")
+
+            conn.commit()
+            logger.info("Transaction committed")
+
+    except Exception:
+        logger.exception("Load failed")
+        raise

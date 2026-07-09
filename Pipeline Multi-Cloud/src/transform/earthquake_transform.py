@@ -22,7 +22,7 @@ load_dotenv()
 
 df = extract_earthquakes()
 
-def earthquake_transform() -> pd.DataFrame:
+def earthquake_transform(df: pd.DataFrame) -> pd.DataFrame:
         
         df["type"] = df["type"]
         df["status"] = df["status"]
