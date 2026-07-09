@@ -5,10 +5,10 @@ REQUIRED_COLUMNS = [
     "status",
     "magnitude",
     "place",
-    "time",
     "longitude",
     "latitude",
     "depth",
+    "time"
 ]
 
 def validate(df: pd.DataFrame) -> pd.DataFrame:
@@ -22,7 +22,7 @@ def validate(df: pd.DataFrame) -> pd.DataFrame:
 
     # 3. Remove rows with required null values
     df = df.dropna(
-        subset=["time", "longitude", "latitude", "magnitude"]
+        subset=["type", "status", "place","time", "longitude", "latitude", "magnitude"]
     )
 
     # 4. Validate coordinate ranges
