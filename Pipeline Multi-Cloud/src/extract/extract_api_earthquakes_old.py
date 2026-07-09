@@ -53,6 +53,6 @@ with requests.Session() as session:
 
 if records:
     df = pd.DataFrame(records)
-#    print(df)
+    print("API get earthquake records properly")
 else:
-    print("No se encontraron sismos o hubo un error en la solicitud.")
+    print("There is no earthquakes records or there was aan error ot obtain API ouput.")

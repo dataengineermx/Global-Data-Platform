@@ -1,5 +1,5 @@
 from src.utils.paths import data_raw_path
-from src.extraction.extract_api_population import df
+from src.extract.extract_api_population import df
 from src.monitor.job_monitor import LoadMonitor
 
 def main():  #This prevents the code from executing accidentally when the module is imported by another module

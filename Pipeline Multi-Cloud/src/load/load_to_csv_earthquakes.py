@@ -1,5 +1,5 @@
 from src.utils.paths import data_raw_path
-from src.extraction.extract_api_earthquakes import df
+from src.extract.extract_api_earthquakes import df
 from src.monitor.job_monitor import LoadMonitor
 
 
