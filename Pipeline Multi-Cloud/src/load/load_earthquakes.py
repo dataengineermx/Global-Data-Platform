@@ -4,12 +4,21 @@ import sys
 import psycopg
 import logging
 import pandas as pd
-from src.utils.clean import remove_parentesis
-from src.utils.clean import milliseconds_to_date
-from src.utils.paths import data_raw_path
+from src.monitor import logging_config
+from src.monitor import job_monitor
 from src.utils.paths import data_clean_path
+from src.stringIObuffer.earthquakes_buffer import dataframe_to_buffer
 
-from stringIObuffer import dataframe_to_buffer
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+
+logger = logging.getLogger(__name__)
+
 
 file_path=data_clean_path
 target_table="earthquakes"
@@ -71,7 +80,7 @@ def bulk_load_csv_to_postgres(file_path: str, target_table: str) -> None:
 
 if __name__ == "__main__":
     # In production, pass these via arguments, task runner orchestration (Airflow), or configurations
-    CSV_FILE = data_clean_path/"clean_earthquakes.csv"
+    CSV_FILE = dataframe_to_buffer
     TABLE_NAME = target_table
     
     bulk_load_csv_to_postgres(CSV_FILE, TABLE_NAME)
