@@ -4,8 +4,6 @@ import os
 import psycopg
 import logging
 import pandas as pd
-from src.monitor import logging_config
-from src.monitor import job_monitor
 from src.transform.earthquake_transform import dataframe_to_buffer
 
 
@@ -37,7 +35,8 @@ def get_db_connection_string() -> str:
 def load_earthquakes(df: pd.DataFrame) -> None:
     logger.warning(">>> ENTERED load_earthquakes() <<<")
     logger.info(f"Rows to load: {len(df)}")
-
+    logger.info(df.columns.tolist())
+    
     buffer = dataframe_to_buffer(df)
     csv_data = buffer.getvalue()
 
@@ -50,14 +49,17 @@ def load_earthquakes(df: pd.DataFrame) -> None:
 
             with conn.cursor() as cur:
                 logger.info("Starting COPY")
-
+                logger.info(f"Rows: {len(df)}")
+                logger.info(df.head())
                 with cur.copy(
                     """
                     COPY earthquakes
-                    (eventtype,status,magnitude,place,longitude,latitude,depth,time)
+                    (type,status,magnitude,place,longitude,latitude,depth,time)
                     FROM STDIN WITH CSV HEADER
                     """
                 ) as copy:
+                    csv_data = buffer.getvalue()
+                    logger.info(csv_data[:500])
                     copy.write(csv_data)
 
                 logger.info("COPY finished")
@@ -65,6 +67,14 @@ def load_earthquakes(df: pd.DataFrame) -> None:
             conn.commit()
             logger.info("Transaction committed")
 
+    except psycopg.OperationalError:
+        logger.exception("Database connection failed")
+        raise
+
+    except psycopg.DataError:
+        logger.exception("COPY failed")
+        raise
+
     except Exception:
-        logger.exception("Load failed")
+        logger.exception("Unexpected error")
         raise

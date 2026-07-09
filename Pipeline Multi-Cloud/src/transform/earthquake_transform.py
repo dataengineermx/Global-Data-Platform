@@ -20,14 +20,8 @@ load_dotenv()
 
 ##Data Transformations
 
-df = extract_earthquakes()
-
 def earthquake_transform(df: pd.DataFrame) -> pd.DataFrame:
         
-        df["type"] = df["type"]
-        df["status"] = df["status"]
-        df["magnitude"] = df["magnitude"]
-        df["place"] = df["place"]
         df["longitude"] = df["longitude"].astype(float)
         df["latitude"] = df["latitude"].astype(float)
         df["depth"] = df["depth"].astype(float)
@@ -38,11 +32,7 @@ def earthquake_transform(df: pd.DataFrame) -> pd.DataFrame:
 def dataframe_to_buffer(df):
     buffer = io.StringIO()
 
-    df.to_csv(
-        buffer,
-        index=False,
-        header=True
-    )
+    df.to_csv(buffer,index=False,header=True)
 
     buffer.seek(0)
 

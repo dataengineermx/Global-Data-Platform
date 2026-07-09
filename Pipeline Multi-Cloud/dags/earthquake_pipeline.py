@@ -33,12 +33,3 @@ def earthquake_pipeline():
 
 
 earthquake_pipeline()
-
-def load_earthquakes(df: pd.DataFrame) -> None:
-    logger.info(f"Loading {len(df)} rows into PostgreSQL")
-
-    buffer = dataframe_to_buffer(df)
-
-    logger.info(f"CSV buffer size: {len(buffer.getvalue())} bytes")
-
-    ...
