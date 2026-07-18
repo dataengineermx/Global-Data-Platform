@@ -2,8 +2,9 @@
 
 Imagine that you received alerts on KPIS that matters in your company! 
 
-This stream platform serves as an example to get latest earthquakes in a custom Region (latitud, longitud, altitud) and magnitude. Data is stored in a Postgress DB.
-Historical information serves to predict behavior, identify patterns, anomalies, seasonal behaviour, be prepared for an event that you know the consecuenses. Are you prepared?
+This stream data (earthquakes) in customized Regions that can be parametrized by coordinates (latitud, longitud, altitud and magnitude). Data is orchestrated in raw data or bronce layer, silver and gold layer avoiding data redudancy, Data is stored in a Postgress DB. The project is organized in such a way that code, functions, transformations and pipelines can be reusable.
+
+Historical information serves to predict behavior, identify patterns, anomalies, seasonal behaviour, be prepared for an event that you know the consecuenses.
 
 Just think about: 
 
