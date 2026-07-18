@@ -17,7 +17,7 @@ Just think about:
 
 - What happend if your get wrong an big magnitide alert of an earthquake that happend in another continent? Business rules and Data Quality Controls
 
-- What happend if you receive an alert 2 minutes late? Data Ontime, real time replication
+- What happend if you received an alert 2 minutes late? Data Ontime, real time replication
 
 - How many people is impacted because of the event? Data Analytics and Dashboards
 
