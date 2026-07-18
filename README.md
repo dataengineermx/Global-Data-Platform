@@ -26,9 +26,11 @@ Just think about:
   
 Now transfer the similar questions to your business. Are you working to solve and minime the impact?
 
-Imagine that you can now complement your data with context about how many people (segmented by age) is going to be impacted, schools, businesses by industries, does your company have branches in a zone impacted?.
+Imagine that you can now complement your data with context about how many people (segmented by age) is going to be impacted, schools, businesses by industries, socio economic data and more.
 
-This IS NOT  solution to predict earthquakes is to demostrate, how to transform data into actionable insights that helps your company to take decisions. I do NOT know everything but I'm sure I can help you to solve your problems. Adrian is a team player, leader, confident, someone you can trust. I work under minimal supervision. Give me an opportunity to help you!  
+This IS NOT  solution to predict earthquakes is to demostrate, how to transform data into actionable insights that helps your company to take decisions. 
+
+I do NOT know everything but I'm sure I can help you to solve your problems. Adrian is a team player, leader, confident, someone you can trust. I work under minimal supervision. Give me an opportunity to help you!  
 
 Adrian Martinez Valentino
 adrian.valentino@outlook.com
